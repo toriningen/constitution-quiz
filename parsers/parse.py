@@ -322,29 +322,45 @@ def parse_options_block(lines):
 
   return options   
 
-from difflib import SequenceMatcher
-
-def similar(a, b):
-    return SequenceMatcher(None, a, b).ratio()
-
 
 def transform_q1():
   questions = [parse_question_q1(question) for question in split_questions_q1(remove_tags(read('q1.html')))]
 
   return questions
-#  with open('q1.json', 'w')
+
 
 def transform_q2():
   questions = [parse_question_q2(question) for question in split_questions_q2(remove_tags(parse_offsets(skip_page_numbers(read('q2.html')))))]
 
   return questions
-  #with open('q2.json', 'w', encoding='utf8') as fp:
-  #  fp.write(json.dumps(questions, indent=2, ensure_ascii=False))
 
-q = [
+
+def minimize(xs):
+  result = []
+
+  for q in xs:
+    entry = {}
+    entry['q'] = q['question']
+    entry['a'] = []
+    for i, a in enumerate(q['answers']):
+      entry['a'].append(a['text'])
+      if a['correct']:
+        c = i
+    entry['c'] = c
+
+    result.append(entry)
+
+  result.sort(key = lambda x: repr(x))
+
+  return result
+
+
+q = minimize([
   *transform_q1(),
   *transform_q2(),
-]
+])
 
-with open('questions.json', 'w', encoding='utf8') as fp:
-  fp.write(json.dumps(q, ensure_ascii=False, indent=2))
+with open('questions.js', 'w', encoding='utf8') as fp:
+  fp.write('addQuestions(')
+  fp.write(json.dumps(q, ensure_ascii=False, separators=(',', ':')))
+  fp.write(');')

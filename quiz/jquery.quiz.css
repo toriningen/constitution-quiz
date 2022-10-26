@@ -23,6 +23,7 @@ body {
 
 .question {
     font-size: 1.25em;
+    font-weight: 900;
 }
 
 .answers {
@@ -70,6 +71,7 @@ body {
     background: #333;
     color: #fff;
     border-radius: 10px;
+    font-size: larger;
 }
 #quiz-buttons a {
     background: #fff;
@@ -85,4 +87,8 @@ body {
 .quiz-results-state #quiz-buttons a {
     background: #333;
     color: #fff;
+}
+
+#quiz-counter {
+  font-style: italic;
 }
